@@ -9,6 +9,20 @@ UniShop é um projeto de e-commerce desenvolvido em Flutter, com arquitetura mod
 - **Pedidos**: Histórico de pedidos realizados.
 - **Conta**: Exibição de dados do usuário e logout.
 
+# App
+## Login
+![image](https://github.com/user-attachments/assets/0572e5a9-07a5-4d55-84ab-561dc443dcce)
+## Cadastro
+![image](https://github.com/user-attachments/assets/87aa798a-5e24-4b42-8f16-fa0da5e4c28c)
+## Tela de produtos
+![image](https://github.com/user-attachments/assets/202e9af9-f4ee-46ab-9146-bce687524c39)
+## Carrinho
+![image](https://github.com/user-attachments/assets/fee5a1c0-75c5-42e2-ad55-4cfaf0e1f98d)
+## Pedidos
+![image](https://github.com/user-attachments/assets/fc17fe5f-cf98-48d6-b712-f3ea146c848c)
+## Conta
+![image](https://github.com/user-attachments/assets/504b5fd4-0599-4f26-88b5-6c0f7895fbb4)
+
 ## Estrutura de Pastas
 
 ```
