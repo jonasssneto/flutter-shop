@@ -105,21 +105,31 @@ class _MainPageState extends State<MainPage> {
         controller: widget.homeController,
         cartController: widget.cartController),
     CartPage(controller: widget.cartController),
-    LoginRegisterPage(controller: widget.authController),
     AccountPage(controller: widget.authController),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: pages,
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: (i) => setState(() => _currentIndex = i),
-      ),
+    return AnimatedBuilder(
+      animation: widget.authController,
+      builder: (context, _) {
+        if (!widget.authController.isLoggedIn) {
+          return Material(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: LoginRegisterPage(controller: widget.authController),
+          );
+        }
+        return Scaffold(
+          body: IndexedStack(
+            index: _currentIndex,
+            children: pages,
+          ),
+          bottomNavigationBar: BottomNavBar(
+            currentIndex: _currentIndex,
+            onTap: (i) => setState(() => _currentIndex = i),
+          ),
+        );
+      },
     );
   }
 }
