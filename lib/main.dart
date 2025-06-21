@@ -112,8 +112,9 @@ class _MainPageState extends State<MainPage> {
         controller: widget.homeController,
         cartController: widget.cartController),
     CartPage(
-        controller: widget.cartController, ordersController: ordersController),
-    OrdersPage(controller: ordersController),
+        controller: widget.cartController,
+        ordersController: widget.ordersController),
+    OrdersPage(controller: widget.ordersController),
     AccountPage(controller: widget.authController),
   ];
 
