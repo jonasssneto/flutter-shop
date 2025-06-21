@@ -5,11 +5,13 @@ import 'repositories/product_repository.dart';
 import 'features/home/controllers/home_controller.dart';
 import 'features/cart/controllers/cart_controller.dart';
 import 'features/auth/controllers/auth_controller.dart';
+import 'features/orders/controllers/orders_controller.dart';
 import 'shared/widgets/bottom_nav_bar.dart';
 import 'features/home/pages/home_page.dart';
 import 'features/cart/pages/cart_page.dart';
 import 'features/auth/pages/login_register_page.dart';
 import 'features/account/pages/account_page.dart';
+import 'features/orders/pages/orders_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
   late final homeController = HomeController(productRepo);
   final cartController = CartController();
   final authController = AuthController();
+  final ordersController = OrdersController();
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +80,7 @@ class MyApp extends StatelessWidget {
         homeController: homeController,
         cartController: cartController,
         authController: authController,
+        ordersController: ordersController,
       ),
     );
   }
@@ -86,11 +90,13 @@ class MainPage extends StatefulWidget {
   final HomeController homeController;
   final CartController cartController;
   final AuthController authController;
+  final OrdersController ordersController;
 
   const MainPage({
     required this.homeController,
     required this.cartController,
     required this.authController,
+    required this.ordersController,
   });
 
   @override
@@ -99,12 +105,15 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
+  late final OrdersController ordersController = OrdersController();
 
   late final pages = [
     HomePage(
         controller: widget.homeController,
         cartController: widget.cartController),
-    CartPage(controller: widget.cartController),
+    CartPage(
+        controller: widget.cartController, ordersController: ordersController),
+    OrdersPage(controller: ordersController),
     AccountPage(controller: widget.authController),
   ];
 
