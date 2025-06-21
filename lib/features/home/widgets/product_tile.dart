@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../home/pages/product_detail_page.dart';
 import '../../../models/product_model.dart';
+import '../../../features/cart/controllers/cart_controller.dart';
 
 class ProductTile extends StatelessWidget {
   final ProductModel product;
-  const ProductTile({required this.product});
+  final CartController cartController;
+  const ProductTile({required this.product, required this.cartController});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => ProductDetailPage(product: product),
+          builder: (_) => ProductDetailPage(
+              product: product, cartController: cartController),
         ));
       },
       child: Card(

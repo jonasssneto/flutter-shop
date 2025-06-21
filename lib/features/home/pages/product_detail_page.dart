@@ -5,9 +5,9 @@ import '../../../features/cart/controllers/cart_controller.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final ProductModel product;
-  final CartController _cartController = CartController();
+  final CartController cartController;
 
-  ProductDetailPage({required this.product});
+  ProductDetailPage({required this.product, required this.cartController});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +22,14 @@ class ProductDetailPage extends StatelessWidget {
             Text(product.title,
                 style: TextStyle(fontSize: 20, color: AppColors.textPrimary)),
             SizedBox(height: 8),
-            Text('R\$ \ ${product.price.toStringAsFixed(2)}',
+            Text('R\$ ${product.price.toStringAsFixed(2)}',
                 style: TextStyle(fontSize: 18, color: AppColors.primary)),
             SizedBox(height: 16),
             Text(product.description),
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                _cartController.addProduct(product);
+                cartController.addProduct(product);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Adicionado ao carrinho')),
                 );

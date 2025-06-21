@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../controllers/home_controller.dart';
 import '../widgets/product_tile.dart';
+import '../../cart/controllers/cart_controller.dart';
 
 class HomePage extends StatefulWidget {
   final HomeController controller;
-  const HomePage({required this.controller});
+  final CartController cartController;
+  const HomePage({required this.controller, required this.cartController});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -40,7 +42,10 @@ class _HomePageState extends State<HomePage> {
             ),
             itemCount: widget.controller.products.length,
             itemBuilder: (_, i) {
-              return ProductTile(product: widget.controller.products[i]);
+              return ProductTile(
+                product: widget.controller.products[i],
+                cartController: widget.cartController,
+              );
             },
           ),
         );

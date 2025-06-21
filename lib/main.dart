@@ -101,7 +101,9 @@ class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
 
   late final pages = [
-    HomePage(controller: widget.homeController),
+    HomePage(
+        controller: widget.homeController,
+        cartController: widget.cartController),
     CartPage(controller: widget.cartController),
     LoginRegisterPage(controller: widget.authController),
     AccountPage(controller: widget.authController),
