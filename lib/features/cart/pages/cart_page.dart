@@ -24,7 +24,7 @@ class CartPage extends StatelessWidget {
                   final item = controller.items[i];
                   return CartItemTile(
                     item: item,
-                    onRemove: () => controller.removeProduct(item.product.id),
+                    onRemove: () => controller.decreaseProduct(item.product.id),
                     onAdd: () => controller.addProduct(item.product),
                   );
                 },

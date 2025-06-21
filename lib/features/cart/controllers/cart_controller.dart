@@ -32,4 +32,16 @@ class CartController extends ChangeNotifier {
     _items.clear();
     notifyListeners();
   }
+
+  void decreaseProduct(int productId) {
+    final index = _items.indexWhere((i) => i.product.id == productId);
+    if (index != -1) {
+      if (_items[index].quantity > 1) {
+        _items[index].quantity--;
+      } else {
+        _items.removeAt(index);
+      }
+      notifyListeners();
+    }
+  }
 }
