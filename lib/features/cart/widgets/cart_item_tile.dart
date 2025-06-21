@@ -5,7 +5,9 @@ import '../../../core/constants/app_colors.dart';
 class CartItemTile extends StatelessWidget {
   final CartItemModel item;
   final VoidCallback onRemove;
-  const CartItemTile({required this.item, required this.onRemove});
+  final VoidCallback onAdd;
+  const CartItemTile(
+      {required this.item, required this.onRemove, required this.onAdd});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +19,23 @@ class CartItemTile extends StatelessWidget {
         '${item.quantity} x R\$ ${item.product.price} = R\$ ${item.totalPrice}',
         style: const TextStyle(color: AppColors.textPrimary),
       ),
-      trailing: IconButton(
-        icon: Icon(Icons.delete, color: Colors.red),
-        onPressed: onRemove,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(Icons.remove, color: AppColors.primary),
+            onPressed: onRemove,
+          ),
+          Text(
+            '${item.quantity}',
+            style: TextStyle(
+                color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+          ),
+          IconButton(
+            icon: Icon(Icons.add, color: AppColors.primary),
+            onPressed: onAdd,
+          ),
+        ],
       ),
     );
   }

@@ -25,19 +25,22 @@ class CartPage extends StatelessWidget {
                   return CartItemTile(
                     item: item,
                     onRemove: () => controller.removeProduct(item.product.id),
+                    onAdd: () => controller.addProduct(item.product),
                   );
                 },
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Total:',
-                      style: TextStyle(fontSize: 18, color: AppColors.textPrimary)),
-                  Text('R\$ \${controller.totalAmount.toStringAsFixed(2)}',
-                      style: TextStyle(fontSize: 18, color: AppColors.accent)),
+                  const Text('Total:',
+                      style: TextStyle(
+                          fontSize: 18, color: AppColors.textPrimary)),
+                  Text('R\$ ${controller.totalAmount.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                          fontSize: 18, color: AppColors.primary)),
                 ],
               ),
             ),
