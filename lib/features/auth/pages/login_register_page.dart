@@ -20,14 +20,19 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
   void _submit() async {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
-    setState(() { _isLoading = true; _error = null; });
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
     try {
       if (_isLogin) {
         await widget.controller.login(email: _email, password: _password);
       } else {
-        await widget.controller.register(name: _name, email: _email, password: _password);
+        await widget.controller
+            .register(name: _name, email: _email, password: _password);
       }
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sucesso!')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Sucesso!')));
     } catch (e) {
       _error = e.toString().replaceFirst('Exception: ', '');
     }
@@ -43,32 +48,60 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
         child: Column(
           children: [
             if (!_isLogin)
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Nome'),
-                validator: Validators.requiredField,
-                onSaved: (v) => _name = v!.trim(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: TextFormField(
+                  decoration: InputDecoration(labelText: 'Nome'),
+                  validator: Validators.requiredField,
+                  onSaved: (v) => _name = v!.trim(),
+                ),
               ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Email'),
-              validator: Validators.email,
-              onSaved: (v) => _email = v!.trim(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: TextFormField(
+                decoration: InputDecoration(labelText: 'Email'),
+                validator: Validators.email,
+                onSaved: (v) => _email = v!.trim(),
+              ),
             ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Senha'),
-              obscureText: true,
-              validator: Validators.password,
-              onSaved: (v) => _password = v!.trim(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 24),
+              child: TextFormField(
+                decoration: InputDecoration(labelText: 'Senha'),
+                obscureText: true,
+                validator: Validators.password,
+                onSaved: (v) => _password = v!.trim(),
+              ),
             ),
-            SizedBox(height: 16),
             if (_error != null)
-              Text(_error!, style: TextStyle(color: Colors.red)),
-            SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(_error!, style: TextStyle(color: Colors.red)),
+              ),
             _isLoading
-              ? CircularProgressIndicator()
-              : ElevatedButton(onPressed: _submit, child: Text(_isLogin ? 'Login' : 'Cadastrar')),
+                ? CircularProgressIndicator()
+                : SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _submit,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text(_isLogin ? 'Login' : 'Cadastrar'),
+                    ),
+                  ),
             TextButton(
               onPressed: () {
-                setState(() { _isLogin = !_isLogin; _error = null; });
+                setState(() {
+                  _isLogin = !_isLogin;
+                  _error = null;
+                });
               },
               child: Text(_isLogin
                   ? 'Ainda não tem conta? Cadastre-se'
