@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? _orderBy = 'desc';
   String _search = '';
+  String? _selectedCategory;
 
   @override
   void initState() {
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                       final result = await showModalBottomSheet<String>(
                         context: context,
                         builder: (context) {
-                          String? selectedOrder;
+                          String? selectedOrder = _orderBy;
                           return Padding(
                             padding: const EdgeInsets.all(16),
                             child: Column(
@@ -121,6 +122,36 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+              SizedBox(height: 12),
+              // Filtro por categoria
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    ChoiceChip(
+                      label: Text('Todas'),
+                      selected: _selectedCategory == null,
+                      onSelected: (_) {
+                        setState(() => _selectedCategory = null);
+                      },
+                    ),
+                    ...widget.controller.products
+                        .map((p) => p.category)
+                        .toSet()
+                        .map((cat) => Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: ChoiceChip(
+                                label: Text(cat),
+                                selected: _selectedCategory == cat,
+                                onSelected: (_) {
+                                  setState(() => _selectedCategory = cat);
+                                },
+                              ),
+                            ))
+                        .toList(),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -134,11 +165,13 @@ class _HomePageState extends State<HomePage> {
               if (widget.controller.error != null) {
                 return Center(child: Text(widget.controller.error!));
               }
-              // Filtro de busca
+              // Filtro de busca e categoria
               filteredProducts = widget.controller.products.where((p) {
                 final matchesSearch = _search.isEmpty ||
                     p.title.toLowerCase().contains(_search.toLowerCase());
-                return matchesSearch;
+                final matchesCategory = _selectedCategory == null ||
+                    p.category == _selectedCategory;
+                return matchesSearch && matchesCategory;
               }).toList();
               // Ordenação por preço
               if (_orderBy == 'desc') {

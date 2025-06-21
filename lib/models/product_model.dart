@@ -4,6 +4,9 @@ class ProductModel {
   final String description;
   final double price;
   final String image;
+  final String category;
+  final double rating;
+  final int count;
 
   ProductModel({
     required this.id,
@@ -11,6 +14,9 @@ class ProductModel {
     required this.description,
     required this.price,
     required this.image,
+    required this.category,
+    required this.rating,
+    required this.count,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +26,9 @@ class ProductModel {
       description: json['description'],
       price: (json['price'] as num).toDouble(),
       image: json['image'],
+      category: json['category'],
+      rating: (json['rating']?['rate'] as num?)?.toDouble() ?? 0.0,
+      count: (json['rating']?['count'] as int?) ?? 0,
     );
   }
 }

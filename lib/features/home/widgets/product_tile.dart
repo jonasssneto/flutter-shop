@@ -59,6 +59,21 @@ class ProductTile extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(Icons.star, color: AppColors.primary, size: 16),
+                  SizedBox(width: 2),
+                  Text(product.rating.toStringAsFixed(1),
+                      style:
+                          TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                  SizedBox(width: 8),
+                  Text('Estoque: ${product.count}',
+                      style:
+                          TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                ],
+              ),
+              const SizedBox(height: 4),
             ],
           ),
         ),
