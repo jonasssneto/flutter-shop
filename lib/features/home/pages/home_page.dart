@@ -3,7 +3,6 @@ import '../../../core/constants/app_colors.dart';
 import '../controllers/home_controller.dart';
 import '../widgets/product_tile.dart';
 import '../../cart/controllers/cart_controller.dart';
-import '../../../models/product_model.dart';
 
 class HomePage extends StatefulWidget {
   final HomeController controller;
@@ -15,10 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? _orderBy = 'desc';
-  String _search = '';
-  String? _selectedCategory;
-
   @override
   void initState() {
     super.initState();
@@ -27,8 +22,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<ProductModel> filteredProducts = widget.controller.products;
-
     return Column(
       children: [
         Container(
@@ -67,9 +60,7 @@ class _HomePageState extends State<HomePage> {
                             EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                       ),
                       onChanged: (value) {
-                        setState(() {
-                          _search = value;
-                        });
+                        widget.controller.search = value;
                       },
                     ),
                   ),
@@ -80,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                       final result = await showModalBottomSheet<String>(
                         context: context,
                         builder: (context) {
-                          String? selectedOrder = _orderBy;
+                          String? selectedOrder = widget.controller.orderBy;
                           return Padding(
                             padding: const EdgeInsets.all(16),
                             child: Column(
@@ -114,9 +105,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       );
                       if (result != null) {
-                        setState(() {
-                          _orderBy = result;
-                        });
+                        widget.controller.orderBy = result;
                       }
                     },
                   ),
@@ -124,33 +113,43 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 12),
               // Filtro por categoria
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    ChoiceChip(
-                      label: Text('Todas'),
-                      selected: _selectedCategory == null,
-                      onSelected: (_) {
-                        setState(() => _selectedCategory = null);
-                      },
-                    ),
-                    ...widget.controller.products
-                        .map((p) => p.category)
-                        .toSet()
-                        .map((cat) => Padding(
+              AnimatedBuilder(
+                animation: widget.controller,
+                builder: (context, _) {
+                  if (widget.controller.isLoading) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+                  final categories = widget.controller.categories;
+                  if (categories.isEmpty) return SizedBox.shrink();
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ChoiceChip(
+                          label: Text('Todas'),
+                          selected: widget.controller.selectedCategory == null,
+                          onSelected: (_) {
+                            widget.controller.selectedCategory = null;
+                          },
+                        ),
+                        ...categories.map((cat) => Padding(
                               padding: const EdgeInsets.only(left: 8),
                               child: ChoiceChip(
                                 label: Text(cat),
-                                selected: _selectedCategory == cat,
+                                selected:
+                                    widget.controller.selectedCategory == cat,
                                 onSelected: (_) {
-                                  setState(() => _selectedCategory = cat);
+                                  widget.controller.selectedCategory = cat;
                                 },
                               ),
                             ))
-                        .toList(),
-                  ],
-                ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -165,20 +164,7 @@ class _HomePageState extends State<HomePage> {
               if (widget.controller.error != null) {
                 return Center(child: Text(widget.controller.error!));
               }
-              // Filtro de busca e categoria
-              filteredProducts = widget.controller.products.where((p) {
-                final matchesSearch = _search.isEmpty ||
-                    p.title.toLowerCase().contains(_search.toLowerCase());
-                final matchesCategory = _selectedCategory == null ||
-                    p.category == _selectedCategory;
-                return matchesSearch && matchesCategory;
-              }).toList();
-              // Ordenação por preço
-              if (_orderBy == 'desc') {
-                filteredProducts.sort((a, b) => b.price.compareTo(a.price));
-              } else if (_orderBy == 'asc') {
-                filteredProducts.sort((a, b) => a.price.compareTo(b.price));
-              }
+              final filteredProducts = widget.controller.filteredProducts;
               if (filteredProducts.isEmpty) {
                 return Center(child: Text('Nenhum produto encontrado.'));
               }
