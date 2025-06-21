@@ -29,11 +29,20 @@ class _HomePageState extends State<HomePage> {
         if (widget.controller.error != null) {
           return Center(child: Text(widget.controller.error!));
         }
-        return ListView.builder(
-          itemCount: widget.controller.products.length,
-          itemBuilder: (_, i) {
-            return ProductTile(product: widget.controller.products[i]);
-          },
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              childAspectRatio: 0.7,
+            ),
+            itemCount: widget.controller.products.length,
+            itemBuilder: (_, i) {
+              return ProductTile(product: widget.controller.products[i]);
+            },
+          ),
         );
       },
     );
