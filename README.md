@@ -47,7 +47,7 @@ lib/
 ## Responsabilidade dos Principais Arquivos
 - **main.dart**: Inicialização do app, injeção de controllers e navegação principal.
 - **core/constants/app_colors.dart**: Paleta de cores global.
-- **core/services/api_service.dart**: Comunicação com API (mock ou real).
+- **core/services/api_service.dart**: Comunicação com API.
 - **features/home/controllers/home_controller.dart**: Lógica de busca, filtro e ordenação de produtos.
 - **features/cart/controllers/cart_controller.dart**: Lógica do carrinho (adicionar, remover, decrementar).
 - **features/orders/controllers/orders_controller.dart**: Lógica de pedidos (adicionar, listar).
